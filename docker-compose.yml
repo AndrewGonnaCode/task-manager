@@ -107,6 +107,20 @@ services:
       kafka-topics --bootstrap-server kafka:29092 --describe --topic task-events
       "
 
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: todo_kafka_ui
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+    networks:
+      - todo-network
   # Task Service (REST API + Kafka Producer)
   task-service:
     build:

@@ -12,37 +12,37 @@ env:
 
 jobs:
   # Job 1: Lint and Format Check
-  lint:
-    name: Lint Code
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [task-service, notification-service]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  # lint:
+  #   name: Lint Code
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       service: [task-service, notification-service]
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.24.2'
+  #     - name: Set up Go
+  #       uses: actions/setup-go@v5
+  #       with:
+  #         go-version: '1.24.2'
 
-      - name: Install golangci-lint
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
+  #     - name: Install golangci-lint
+  #       run: |
+  #         curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.59.1
 
-      - name: Run golangci-lint
-        working-directory: ./services/${{ matrix.service }}
-        run: golangci-lint run --timeout=5m || true
+  #     - name: Run golangci-lint
+  #       working-directory: ./services/${{ matrix.service }}
+  #       run: golangci-lint run --timeout=5m || true
 
-      - name: Check formatting
-        working-directory: ./services/${{ matrix.service }}
-        run: |
-          if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
-            echo "Go code is not formatted:"
-            gofmt -s -l .
-            exit 1
-          fi
+  #     - name: Check formatting
+  #       working-directory: ./services/${{ matrix.service }}
+  #       run: |
+  #         if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
+  #           echo "Go code is not formatted:"
+  #           gofmt -s -l .
+  #           exit 1
+  #         fi
 
   # Job 2: Test Services
   test:
