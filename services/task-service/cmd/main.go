@@ -23,6 +23,8 @@ func main() {
 		log.Println("Warning: .env file not found, using environment variables")
 	}
 
+	log.Println("Hola")
+
 	// Load configuration
 	cfg, err := config.Load()
 	if err != nil {
